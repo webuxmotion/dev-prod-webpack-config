@@ -6,7 +6,8 @@ module.exports = {
     entry: "./src/index.js",
     output: {
         filename: "main-[contenthash].js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "dist"),
+        publicPath: '',
     },
     module: {
         rules: [
@@ -17,6 +18,20 @@ module.exports = {
             {
                 test: /\.scss$/i,
                 use: ["style-loader", "css-loader", "sass-loader"],
+            },
+            {
+                test: /\.html$/i,
+                use: ["html-loader"],
+            },
+            {
+                test: /\.(svg|png|jpg|gif)$/i,
+                use: {
+                    loader: "file-loader",
+                    options: {
+                        name: "[name].[hash].[ext]",
+                        outputPath: "imgs"
+                    }
+                },
             },
         ],
     },

@@ -1,10 +1,12 @@
 const path = require("path");
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     entry: {
         main: ["@babel/polyfill", "./src/index.js"],
-        vendor: "./src/vendor.js"
+        vendor: "./src/vendor.js",
+        test: "./src/test.ts",
     },
     module: {
         rules: [
@@ -34,7 +36,24 @@ module.exports = {
                         ]
                     }
                 }
+            },
+            {
+                test: /\.m?ts$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-typescript'
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties'
+                        ]
+                    }
+                }
             }
         ],
-    }
+    },
+    plugins: [new ForkTsCheckerWebpackPlugin()]
 };

@@ -1,5 +1,4 @@
 const path = require("path");
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -7,21 +6,8 @@ module.exports = {
         main: "./src/index.js",
         vendor: "./src/vendor.js"
     },
-    output: {
-        filename: "main-[contenthash].js",
-        path: path.resolve(__dirname, "dist"),
-        publicPath: '',
-    },
     module: {
         rules: [
-            {
-                test: /\.css$/i,
-                use: ["style-loader", "css-loader"],
-            },
-            {
-                test: /\.scss$/i,
-                use: ["style-loader", "css-loader", "sass-loader"],
-            },
             {
                 test: /\.html$/i,
                 use: ["html-loader"],
@@ -37,10 +23,5 @@ module.exports = {
                 },
             },
         ],
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: "./src/template.html"
-        })
-    ]
+    }
 };

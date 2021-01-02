@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
     mode: 'development',
     entry: {
-        main: "./src/index.js",
+        main: ["@babel/polyfill", "./src/index.js"],
         vendor: "./src/vendor.js"
     },
     module: {
@@ -22,6 +22,19 @@ module.exports = {
                     }
                 },
             },
+            {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ['@babel/preset-env'],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties'
+                        ]
+                    }
+                }
+            }
         ],
     }
 };

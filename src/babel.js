@@ -34,7 +34,6 @@ function resolveAfter2Seconds() {
     const slow = resolveAfter2Seconds() // запускає таймер негайно
     const fast = resolveAfter1Second() // запускає таймер негайно
   
-    // 1. Виконання доходить сюди майже миттєво
     console.log(await slow) // 2. це виконується 2 секунди після 1.
     console.log(await fast) // 3. це виконується 2 секунди після 1., одразу після 2., оскільки швидкий вже вирішений
   }
@@ -50,21 +49,19 @@ function resolveAfter2Seconds() {
   async function parallel() {
     console.log('==ПАРАЛЕЛЬНИЙ з await Promise.all==')
   
-    // Починає 2 "роботи" паралельно та чекає, поки обидві не завершаться
     await Promise.all([
         (async()=>console.log(await resolveAfter2Seconds()))(),
         (async()=>console.log(await resolveAfter1Second()))()
     ])
   }
   
-  // Ця функція не обробляє помилки. Дивіться застереження нижче!
   function parallelPromise() {
     console.log('==ПАРАЛЕЛЬНИЙ з Promise.then==')
     resolveAfter2Seconds().then((message)=>console.log(message))
     resolveAfter1Second().then((message)=>console.log(message))
   }
   
-  sequentialStart() // через 2 секунди виводить "повільний", далі через ще 1 секунду "швидкий"
+  sequentialStart()
 
 class Util {
   static id = Date.now();

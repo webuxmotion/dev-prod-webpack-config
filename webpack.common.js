@@ -1,12 +1,32 @@
 const path = require("path");
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const babelOptions = preset => {
+    const opts = {
+        presets: [
+            '@babel/preset-env',
+        ],
+        plugins: [
+            '@babel/plugin-proposal-class-properties'
+        ]
+    }
+
+    if (preset) {
+        opts.presets.push(preset)
+    }
+
+    return opts;
+}
+
 module.exports = {
     mode: 'development',
     entry: {
         main: ["@babel/polyfill", "./src/index.js"],
         vendor: "./src/vendor.js",
         test: "./src/test.ts",
+    },
+    resolve: {
+        extensions: ['.js', '.jsx'],
     },
     module: {
         rules: [
@@ -29,12 +49,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
-                    options: {
-                        presets: ['@babel/preset-env'],
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties'
-                        ]
-                    }
+                    options: babelOptions()
                 }
             },
             {
@@ -42,15 +57,15 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
-                    options: {
-                        presets: [
-                            '@babel/preset-env',
-                            '@babel/preset-typescript'
-                        ],
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties'
-                        ]
-                    }
+                    options: babelOptions('@babel/preset-typescript')
+                }
+            },
+            {
+                test: /\.m?jsx$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: babelOptions('@babel/preset-react')
                 }
             }
         ],

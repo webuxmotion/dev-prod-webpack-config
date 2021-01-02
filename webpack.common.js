@@ -7,7 +7,8 @@ const babelOptions = preset => {
             '@babel/preset-env',
         ],
         plugins: [
-            '@babel/plugin-proposal-class-properties'
+            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-syntax-dynamic-import'
         ]
     }
 
@@ -16,6 +17,18 @@ const babelOptions = preset => {
     }
 
     return opts;
+}
+
+const jsLoaders = () => {
+    const loaders = [
+        {
+            loader: 'babel-loader',
+            options: babelOptions()
+        },
+        'eslint-loader'
+    ];
+
+    return loaders;
 }
 
 module.exports = {
@@ -47,10 +60,7 @@ module.exports = {
             {
                 test: /\.m?js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: babelOptions()
-                }
+                use: jsLoaders()
             },
             {
                 test: /\.m?ts$/,

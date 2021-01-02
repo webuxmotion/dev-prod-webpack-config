@@ -29,38 +29,6 @@ function resolveAfter2Seconds() {
     console.log(fast) // 3. це виконується 3 секунди після 1.
   }
   
-  async function concurrentStart() {
-    console.log('==КОНКУРЕНТНИЙ СТАРТ з await==')
-    const slow = resolveAfter2Seconds() // запускає таймер негайно
-    const fast = resolveAfter1Second() // запускає таймер негайно
-  
-    console.log(await slow) // 2. це виконується 2 секунди після 1.
-    console.log(await fast) // 3. це виконується 2 секунди після 1., одразу після 2., оскільки швидкий вже вирішений
-  }
-  
-  function concurrentPromise() {
-    console.log('==КОНКУРЕНТНИЙ СТАРТ з Promise.all==')
-    return Promise.all([resolveAfter2Seconds(), resolveAfter1Second()]).then((messages) => {
-      console.log(messages[0]) // повільний
-      console.log(messages[1]) // швидкий
-    });
-  }
-  
-  async function parallel() {
-    console.log('==ПАРАЛЕЛЬНИЙ з await Promise.all==')
-  
-    await Promise.all([
-        (async()=>console.log(await resolveAfter2Seconds()))(),
-        (async()=>console.log(await resolveAfter1Second()))()
-    ])
-  }
-  
-  function parallelPromise() {
-    console.log('==ПАРАЛЕЛЬНИЙ з Promise.then==')
-    resolveAfter2Seconds().then((message)=>console.log(message))
-    resolveAfter1Second().then((message)=>console.log(message))
-  }
-  
   sequentialStart()
 
 class Util {
